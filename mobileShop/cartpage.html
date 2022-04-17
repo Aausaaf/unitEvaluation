@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            cartpage
+        </title>
+        <style>
+            .head{
+                width: 70%;
+                height: 10%;
+                margin: auto;
+                text-align: center;
+                display: flex;
+                border: 1px solid #cecece;
+
+            }
+            .head > p,img{
+                
+                margin-left:15%;
+                
+            }
+            img{
+                height: 100px;
+                width: 100px;
+                padding: 8px;
+                align-items: center;
+            }
+            .no{
+                margin-right: -0.3%;
+            }
+            .pr{
+                
+                position: relative;
+                left: 5%;
+            }
+            .p{
+                
+                position: relative;
+                left: -4%;
+                text-align: center;
+            }
+            #tot{
+                margin-left: 15%;
+                margin-top: -1%;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1 style="text-align: center; background-color: bisque; color: blueviolet;">CART PAGE</h1>
+        <div id="container">
+
+        </div>
+        <input  style="margin-left: 15%;"  type="text" placeholder="Enter Coupon" id="Couponinput"/>
+        <button onclick="applyCoupon()" >APPLY COUPON </button>
+        <br/>
+        <br/>
+        <br/>
+    <p id="tot"></p>
+   <a href="checkeckout.html" style="margin-left: 20%;"> <button>CHECK OUT</button></a>
+        
+
+        
+        
+       
+    </body>
+    <script>
+      // console.log(JSON.parse(localStorage.getItem("cart")))
+      let container = document.getElementById("container")
+      var tot = document.getElementById("tot")
+      var cart = JSON.parse(localStorage.getItem("cart"));
+      var total = cart.reduce((acc,curr)=> {
+           return acc + curr.price;
+       }, 0);
+       console.log(total)
+      function updatetot(total)
+      {
+        tot.textContent= "Total : " +  total
+      }
+      
+      
+      updatetot(total)
+
+      if(cart ===null)
+      {
+          localStorage.setItem("cart",JSON.stringify([]))
+      }
+      var head = document.createElement('div')
+      head.setAttribute('class','head')
+      var sirial = document.createElement('p')
+      sirial.setAttribute('class','no')
+      sirial.textContent = "#"
+      var imagehead = document.createElement('p')
+      imagehead.textContent = "IMAGE"
+      var productname = document.createElement('p')
+      productname.textContent = "PRODUCT NAME"
+      var pricehead = document.createElement('p')
+      pricehead.setAttribute('class','pr')
+      pricehead.textContent="PRICE"
+    
+      head.append(sirial,imagehead ,productname,pricehead,)
+     // container.append(head)
+     var i = 1
+     function displaydata(data)
+     {   var listcontainer = document.createElement('div')
+          
+         data.forEach((prod) => {
+            var list= document.createElement('div')
+      list.setAttribute('class','head')
+      var sirial = document.createElement('p')
+      sirial.textContent = i
+      i +=1
+       
+      var image = document.createElement('img')
+      image.src = prod.image_url
+      var productname = document.createElement('p')
+      productname.textContent = prod.name
+      var price = document.createElement('p')
+      price.textContent= "INR : " + prod.price;
+      price.setAttribute('class','p')
+      list.append(sirial,image ,productname,price)
+
+      listcontainer.append(list)
+             
+         });
+         container.append(head)
+         container.append(listcontainer)
+     }
+     displaydata(JSON.parse(localStorage.getItem("cart")));
+    
+    
+    // container.append(tot)
+    
+     function applyCoupon()
+       {
+         var Couponinput = document.getElementById("Couponinput").value
+           console.log(Couponinput)
+           if(Couponinput === "masai30")
+           {
+               total = total - 0.30*total;
+               updatetot(total)
+           }
+       }
+     
+    </script>
+</html>
